@@ -29,13 +29,14 @@ fetch-latest-build:
 commit-and-push:
 	HASH=${git rev-parse HEAD}; \
 	cd build; \
+	git add -A; \
 	git commit -m "Build from commit ${HASH}"; \
 	git push -u origin build; \
 	cd ..;
 
 generate:
-	clj -X:generate
+	clj -X:generate;
 
 all: clean generate
 
-deploy: clean fetch-latest-build generate commit-and-push
+deploy: fetch-latest-build clean generate commit-and-push

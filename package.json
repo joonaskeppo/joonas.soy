@@ -1,0 +1,14 @@
+{
+  "name": "joonas.soy",
+  "description": "Joonas Keppo",
+  "version": "1.0.0",
+  "author": "Joonas Keppo <joonaskeppo@gmail.com>",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "autoprefixer": "^10.3.1",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.7"
+  }
+}
