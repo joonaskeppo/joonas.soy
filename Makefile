@@ -1,4 +1,4 @@
-GOALS := clean fetch-latest-build generate all deploy commit-and-push
+GOALS := clean fetch-latest-build prod dev dev/css dev/html all deploy commit-and-push watch
 
 .PHONY: $(GOALS)
 .SILENT: $(GOALS)
@@ -34,9 +34,21 @@ commit-and-push:
 	git push -u origin build; \
 	cd ..;
 
-generate:
-	clj -X:generate;
+prod:
+	clj -X:prod;
 
-all: clean generate
+dev:
+	clj -X:dev/all;
+
+dev/css:
+	NODE_ENV=development npx tailwind -o build/styles.css;
+
+dev/html:
+	clj -X:dev/html;
+
+watch:
+	fswatch -o src | xargs -n1 -I{} make dev/html;
+
+all: clean prod
 
 deploy: fetch-latest-build clean generate commit-and-push
