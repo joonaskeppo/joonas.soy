@@ -73,10 +73,12 @@
 
 (defn output-assets!
   "Copy assets from public directory to given target directory"
-  [{:keys [target]}]
+  [{:keys [target] :as params}]
   (log/info [:output-assets! target])
   (let [cmd (str/join " " ["cp" "-R" "public/*" target])]
-    (shell/sh "bash" "-c" cmd)))
+    (shell/sh "bash" "-c" cmd))
+  ;; report output handled ok
+  (update params :output conj ::assets))
 
 (defn make?
   "Should step be called?"
