@@ -8,7 +8,9 @@
   "scripts": {
     "serve": "live-server build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.2.1"
+  },
   "devDependencies": {
     "autoprefixer": "^10.3.1",
     "live-server": "^1.2.1",

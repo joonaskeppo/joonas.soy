@@ -71,31 +71,40 @@
   ;; report output handled ok
   (update params :output conj ::css))
 
+(defn output-assets!
+  "Copy assets from public directory to given target directory"
+  [{:keys [target]}]
+  (log/info [:output-assets! target])
+  (let [cmd (str/join " " ["cp" "-R" "public/*" target])]
+    (shell/sh "bash" "-c" cmd)))
+
 (defn make?
   "Should step be called?"
-  [step {{:keys [render-only]} :directives}]
-  (or (empty? render-only) (some #{step} render-only)))
+  [step {{:keys [output]} :directives}]
+  (or (empty? output) (some #{step} output)))
 
 (comment
   (make? :html {})
-  (make? :html {:directives {:render-only [:html]}}))
+  (make? :html {:directives {:output [:html]}}))
 
 (defn make!
   "Wrap conditional compilation and file writing"
   [step params]
   (if (make? step params)
     (case step
-      :html (-> params (compile-html) (output-html!))
-      :css  (-> params (output-css!)))
+      :html   (-> params (compile-html) (output-html!))
+      :css    (-> params (output-css!))
+      :assets (-> params (output-assets!)))
     params))
 
 (defn generate-site!
   "Output the result of `render` to directory specified by `target`"
-  [{:keys [debug] :or {debug false} :as params}]
+  [params]
   (try
     (->> params
          (preface)
          (make! :html)
+         (make! :assets)
          (make! :css))
     (log/info [:generate-site!->success])
     (catch Exception e

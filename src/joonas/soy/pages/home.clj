@@ -1,37 +1,47 @@
 (ns joonas.soy.pages.home
-  (:require [joonas.soy.components.icons :as icons]))
+  (:require [joonas.soy.pages.common :refer [->page]]))
 
-(def nav-links
-  [{:label   "Projects"
-    :href    "#"
-    :current true}
-   {:label "Resume"
-    :href  "#"}
-   {:label "Blog"
-    :href  "#"}])
+(def projects
+  [{:heading     "Aatos"
+    :image       [:local "aatos.png"]
+    :timeline    ["2020" "present"]
+    :tech        ["Clojure" "ClojureScript" "PostgreSQL" "Reagent" "Re-frame"]
+    :description "Co-founder and token tech person at Aatos Health. Building better mental health promotion for knowledge workers, one Clojure form at a time."}
+
+   {:heading     "HRS Academy"
+    :image       [:local "hrs.png"]
+    :timeline    ["2020" "present"]
+    :tech        ["Clojure" "ClojureScript" "PostgreSQL" "Reagent" "Re-frame"]
+    :description "A career coaching platform for HRS Advisors with a tailor-made content editor, customizable programs, multichannel chat, among others."}])
+
+(defn ->src
+  [[src-type file]]
+  (case src-type
+    :local (str "img/" file)
+    :ext   file))
 
 (def page
-  [:body {:class "bg-orange-100 min-h-screen"}
-   [:div
-    [:div {:class "p-4 md:py-16 max-w-5xl mx-auto space-y-6"}
-     [:div {:class "flex items-center justify-between"}
-      ;; main nav links
-      [:nav {:class "flex items-center space-x-4"}
-       (for [{:keys [label href current]} nav-links]
-         [:a {:href href
-              :class (if current
-                       "border-b-2 border-orange-800 text-orange-900"
-                       "border-b-2 border-transparent hover:border-orange-800 text-orange-800 hover:text-orange-900 transition duration-100")}
-          [:span {:class "text-lg"}
-           label]])]
-
-      ;; social links
-      (let [class "h-6 text-orange-800 hover:text-orange-900 transition duration-100"]
-        [:div {:class "flex items-center space-x-4"}
-         [:a {:href "#"}
-          (icons/linkedin {:class class})]
-         [:a {:href "#"}
-          (icons/twitter {:class class})]
-         [:a {:href "#"}
-          (icons/github {:class class})]])]
-     [:p "Home page"]]]])
+  (->page
+   {:page :projects}
+   [:div {:class "space-y-8"}
+    [:p {:class "text-gray-900"}
+     "Some projects I've been working on, mainly as a solo developer:"]
+    [:div {:class "grid grid-cols-1 md:grid-cols-3 gap-6"}
+     (for [{:keys [heading image tech description] [start-time end-time] :timeline} projects]
+       [:div {:class "flex flex-col space-y-2"}
+        [:img {:src (->src image)
+               :class "rounded object-cover h-60 border border-orange-200 mb-4"}]
+        [:div {:class "space-y-4"}
+         [:div {:class "flex justify-between items-center"}
+          [:h3 {:class "font-mono font-bold text-lg block text-gray-900"}
+           heading]
+          [:div {:class "flex items-center space-x-1"}
+           [:span {:class "text-sm text-gray-700"} start-time]
+           [:span {:class "text-sm text-gray-400"} "-"]
+           [:span {:class "text-sm text-gray-700"} end-time]]]
+         [:p {:class "text-base text-gray-800"}
+          description]
+         [:div {:class "pt-1 flex flex-wrap items-center"}
+          (for [tech-item tech]
+            [:span {:class "px-2 py-0.5 rounded text-sm font-medium bg-orange-100 text-orange-700 mr-1.5 mb-1.5"}
+             tech-item])]]])]]))

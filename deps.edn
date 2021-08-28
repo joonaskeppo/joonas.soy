@@ -13,7 +13,7 @@
            {:exec-fn   joonas.soy.core/generate-site!
             :exec-args {:target     "build"
                         :renderer   joonas.soy.render/render-site
-                        :directives {:render-only [:html]}
+                        :directives {:output [:html :assets]}
                         :env        {"NODE_ENV" "development"}}}
 
            :prod

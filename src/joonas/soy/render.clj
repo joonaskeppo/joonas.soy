@@ -2,10 +2,12 @@
   (:require [clojure.algo.generic.functor :refer [fmap]]
             [hiccup.page :refer [html5]]
             ;; --- pages ---
-            [joonas.soy.pages.home :as home]))
+            [joonas.soy.pages.home :as home]
+            [joonas.soy.pages.resume :as resume]))
 
 (def pages
-  {:site/root home/page})
+  {:site/root   home/page
+   :site/resume resume/page})
 
 (def head
   [:head
@@ -14,8 +16,8 @@
    [:title "Joonas Keppo"]
    [:link {:rel "preconnect" :href "https://fonts.googleapis.com"}]
    [:link {:rel "preconnect" :href "https://fonts.gstatic.com" :crossorigin true}]
-   [:link {:rel "stylesheet" :href "https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Work+Sans:ital,wght@0,400;0,700;1,400&display=swap"}]
-   [:link {:href "styles.css" :rel "stylesheet"}]])
+   [:link {:rel "stylesheet" :href "https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Work+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap"}]
+   [:link {:href "/styles.css" :rel "stylesheet"}]])
 
 (defn render-page
   [page]
