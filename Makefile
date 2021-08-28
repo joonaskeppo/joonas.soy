@@ -5,7 +5,7 @@ GOALS := clean fetch-latest-build prod dev dev/css dev/html all deploy commit-an
 
 .DEFAULT_GOAL := all
 SHELL := /bin/bash
-REPO = https://github.com/joonaskeppo/joonas.soy.git
+REPO = git@github.com:joonaskeppo/joonas.soy.git
 
 clean:
 	mkdir -p build; \
@@ -23,14 +23,13 @@ fetch-latest-build:
 	if [ -d build/.git ]; then \
 		cd build && git pull && cd ..; \
 	else \
-		git clone ${REPO} build build; \
+		git clone -b build ${REPO} build; \
 	fi
 
 commit-and-push:
-	HASH=${git rev-parse HEAD}; \
 	cd build; \
 	git add -A; \
-	git commit -m "Build from commit ${HASH}"; \
+	git commit -m "Deployed from script"; \
 	git push -u origin build; \
 	cd ..;
 
