@@ -4,7 +4,7 @@ GOALS := clean fetch-latest-build prod dev dev/css dev/html all deploy commit-an
 .SILENT: $(GOALS)
 
 .DEFAULT_GOAL := all
-SHELL := /bin/bash 
+SHELL := /bin/bash
 REPO = https://github.com/joonaskeppo/joonas.soy.git
 
 clean:
@@ -51,4 +51,4 @@ watch:
 
 all: clean prod
 
-deploy: fetch-latest-build clean generate commit-and-push
+deploy: fetch-latest-build clean prod commit-and-push
