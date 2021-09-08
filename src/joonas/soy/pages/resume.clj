@@ -1,6 +1,6 @@
 (ns joonas.soy.pages.resume
   (:require [joonas.soy.pages.common :refer [->page]]
-            [joonas.soy.components.icons :as icons]))
+            [joonas.soy.components.icons :refer [icon]]))
 
 ;; --- data ---
 
@@ -75,12 +75,12 @@
    [:div {:class "space-y-2"}
     [:h1 {:class "text-2xl font-mono font-bold text-coolGray-800"} "Joonas Keppo"]
     [:div {:class "flex items-center space-x-2"}
-     (icons/github {:class "h-5 text-orange-900"})
+     (icon :remixicon/github {:class "h-5 text-orange-900"})
      [:a {:href "https://github.com/joonaskeppo"}
       [:span {:class "text-coolGray-500"} "github.com/"]
       [:span {:class "text-coolGray-900"} "joonaskeppo"]]]
     [:div {:class "flex items-center space-x-2"}
-     (icons/linkedin {:class "h-5 text-orange-900"})
+     (icon :remixicon/linkedin {:class "h-5 text-orange-900"})
      [:a {:href "https://linkedin.com/in/joonaskeppo"}
       [:span {:class "text-coolGray-500"} "linkedin.com/in/"]
       [:span {:class "text-coolGray-900"} "joonaskeppo"]]]]])

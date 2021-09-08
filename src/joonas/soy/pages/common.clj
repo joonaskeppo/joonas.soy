@@ -1,5 +1,5 @@
 (ns joonas.soy.pages.common
-  (:require [joonas.soy.components.icons :as icons]))
+  (:require [joonas.soy.components.icons :refer [icon]]))
 
 (def nav-links
   [{:label "Projects"
@@ -32,11 +32,11 @@
     (let [class "h-6 text-orange-800 hover:text-orange-900 transition duration-100"]
       [:div {:class "flex items-center space-x-4"}
        [:a {:href "https://www.linkedin.com/in/joonaskeppo/"}
-        (icons/linkedin {:class class})]
+        (icon :remixicon/github {:class class})]
        [:a {:href "https://twitter.com/joonaskeppo"}
-        (icons/twitter {:class class})]
+        (icon :remixicon/linkedin {:class class})]
        [:a {:href "https://github.com/joonaskeppo/"}
-        (icons/github {:class class})]])]])
+        (icon :remixicon/twitter {:class class})]])]])
 
 (defn ->page
   "Generate page with opts:
