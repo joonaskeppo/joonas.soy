@@ -5,7 +5,7 @@
 ;; --- data ---
 
 (def experience-data
-  [{:title       "Co-Founder, CTO"
+  [{:title       "Co-Founder, Tech"
     :place       "Aatos Health"
     :timeline    ["2020" "present"]
     :tags        ["Clojure" "ClojureScript" "Reagent" "Re-frame" "PostgreSQL"]
@@ -93,11 +93,7 @@
     [:span "A full-stack web developer with a fondness for functional programming, mathematics, and occasionally, design. I've spent years working on various mental health projects, both technical and non-technical. My current primary focus is developing better mental health promotion for knowledge workers via "]
     [:a {:class "font-bold text-orange-800 hover:text-orange-900"
          :href "https://aatoshealth.com"} "Aatos"]
-    [:span {:class "text-coolGray-900"} "."]]
-   #_[:p {:class "text-coolGray-900"}
-    [:span "I'm currently on a deep-dive into the world of Clojure, while working through some classic Lisp-oriented textbooks like Peter Norvig's "]
-    [:span {:class "italic"} "Paradigms of Artificial Intelligence Programming"]
-    [:span "."]]])
+    [:span {:class "text-coolGray-900"} "."]]])
 
 (def experience
   [:div {:class "space-y-2"}
