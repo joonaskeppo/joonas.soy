@@ -1,5 +1,5 @@
 (ns joonas.soy.pages.home
-  (:require [joonas.soy.pages.common :refer [->page]]))
+  (:require [joonas.soy.pages.common :refer [make-page]]))
 
 (def projects
   [{:heading     "Aatos"
@@ -21,8 +21,8 @@
     :ext   file))
 
 (def page
-  (->page
-   {:page :projects}
+  (make-page
+   {:id "projects"}
    [:div {:class "space-y-8"}
     [:p {:class "text-gray-900"}
      "Some projects I've been working on, mainly as a solo developer:"]

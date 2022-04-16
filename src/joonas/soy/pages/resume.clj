@@ -1,5 +1,5 @@
 (ns joonas.soy.pages.resume
-  (:require [joonas.soy.pages.common :refer [->page]]
+  (:require [joonas.soy.pages.common :refer [make-page]]
             [joonas.soy.components.icons :refer [icon]]))
 
 ;; --- data ---
@@ -150,8 +150,8 @@
                :style (str "width: " (int (* 100 skill)) "%")}]]])]])
 
 (def page
-  (->page
-   {:page :resume}
+  (make-page
+   {:id "resume"}
    [:div
     [:div {:class "grid grid-cols-1 md:grid-cols-2 gap-12"}
      [:div {:class "flex flex-col space-y-12"}

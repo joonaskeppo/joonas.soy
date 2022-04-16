@@ -2,61 +2,46 @@
   (:require [clojure.java.io :as io]
             [clojure.java.shell :as shell]
             [clojure.string :as str]
-            [taoensso.timbre :as log]))
+            [taoensso.timbre :as log]
+            [joonas.soy.render :as render]))
 
 (defrecord Site [env directives target renderer compiled output])
 
 (defn preface
   "Transform params into Site record"
   [params]
-  (-> params (update :renderer requiring-resolve) (map->Site)))
+  (-> params #_(update :renderer requiring-resolve) (map->Site)))
 
 (comment
   (preface {:target     "build"
-            :renderer   'joonas.soy.render/render-site
+            ;; :renderer   #'joonas.soy.render/render-site
             :directives {:render-only [:html]}
             :env        {"NODE_ENV" "development"}}))
 
 (defn compile-html
   "Update site data with compiled HTML"
-  [{:keys [renderer] :as params}]
-  (log/info [:compile-html renderer])
-  (assoc-in params [:compiled :html] (renderer)))
-
-(defn page-key->dir
-  "Map a page keyword to a directory name"
-  [pk]
-  (if (= :site/root pk)
-    "" ;; front page -> root
-    (name pk)))
+  [params]
+  (log/info [:compile-html params])
+  (assoc params :pages (->> render/pages
+                            (map #(assoc % :html (render/render-page %))))))
 
 (defn ->target-path
-  "Generate file path for a given page.
-  Pages are specified as keywords and resolved via `page-key->dir`."
-  [target page]
-  (let [page*         (page-key->dir page)
-        base-accessor (vec (str/split target #"/"))
-        file-accessor (if (not= "" page*)
-                        (conj base-accessor page* "index.html")
-                        (conj base-accessor "index.html"))]
-    (str/join "/" file-accessor)))
-
-(comment
-  (->target-path "build" :site/root)
-  (->target-path "build" :about))
+  "Generate file path for a given `href`"
+  [target href]
+  (if (empty? href)
+    (format "%s/index.html" target)
+    (format "%s%s/index.html" target href)))
 
 (defn output-html!
   "Output HTML to given target directory"
-  [{:keys [target] {:keys [html]} :compiled :as params}]
-  (let [target-paths (->> (keys html)
-                          (map (juxt identity #(->target-path target %)))
-                          (into {}))]
-    (log/info [:output-html! target-paths])
-    (doseq [[page path] target-paths]
+  [{:keys [target pages] :as params}]
+  (let [pages (map #(assoc % :target-path (->target-path target (:href %))) pages)]
+    (log/info [:output-html! target])
+    (doseq [{:keys [target-path html]} pages]
       ;; create parent dir
-      (io/make-parents path)
+      (io/make-parents target-path)
       ;; output HTML to given file path
-      (spit path (get html page)))
+      (spit target-path html))
     ;; report that output handled ok
     (update params :output conj ::html)))
 
@@ -109,6 +94,7 @@
          (make! :assets)
          (make! :css))
     (log/info [:generate-site!->success])
+    true
     (catch Exception e
       (log/error [:generate-site!->failure e]))))
 
